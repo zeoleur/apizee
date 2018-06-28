@@ -3,11 +3,11 @@
  * Auto-generated code below aims at helping you parse
  * the standard input according to the problem statement.
  **/
-function pertes($tab){
+function pertes($tab, $taille){
     $perte = 0;
     foreach($tab as $key => $v){
         if(isset($tab[$key + 1])){
-            for($i = $key + 1; $i < count($tab); $i++){
+            for($i = $key + 1; $i < $taille; $i++){
                 if($tab[$i] - $v < $perte){
                     $perte = $tab[$i] - $v;
                 }
@@ -39,7 +39,7 @@ for ($i = 0; $i < $n; $i++)
 
 
 
-$retour = pertes($valeur_bourse);
+$retour = pertes($valeur_bourse, count($valeur_bourse));
 $perte = $retour;
 
 if($perte < 0){
