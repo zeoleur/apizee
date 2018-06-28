@@ -17,41 +17,18 @@ $valeur_bourse = explode(' ', $vs);
 // }
 
 $perte = 0;
-$perte_max = 0;
-$min = 0;
 $max = 0;
-$maybe_max = 0;
 
 // Write an action using echo(). DON'T FORGET THE TRAILING \n
 // To debug (equivalent to var_dump): error_log(var_export($var, true));
 $taille = count($valeur_bourse) - 1;
-
-for ($i = 0; $i < $taille; $i++){
-    $act = $valeur_bourse[$i];
-    $next = $valeur_bourse[$i + 1];
-
-    if($act > $next){
-        $max = ($max == 0) ? $act : $max;
-        $min = ($min == 0) ? $next : min($min, $next);
-        
-        $perte = $min - $max;
-
-        if($maybe_max != 0){
-            $max = $maybe_max;
-            $maybe_max = 0;
-            $min = 0;
-            
-        }
-
-        $perte_max = min($perte_max, $perte);
-        
-        continue;
+foreach($valeur_bourse as $v){
+    if($v > $max){
+        $max = $v;
     }
-    
-    if($next > $max){
-        $maybe_max = $next;
+    if($v - $max < $perte){
+        $perte = $v - $max;
     }
 }
-
-echo($perte_max);
+echo($perte);
 ?>
