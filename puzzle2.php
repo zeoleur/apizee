@@ -3,49 +3,55 @@
  * Auto-generated code below aims at helping you parse
  * the standard input according to the problem statement.
  **/
-function pertes($tab, $taille){
-    $perte = 0;
-    foreach($tab as $key => $v){
-        if(isset($tab[$key + 1])){
-            for($i = $key + 1; $i < $taille; $i++){
-                if($tab[$i] - $v < $perte){
-                    $perte = $tab[$i] - $v;
-                }
-            }
-        }
-    }
-    return $perte;
-}
-
 fscanf(STDIN, "%d",
     $n
 );
 
-$inputs = fgets(STDIN);
-$inputs = explode(" ",$inputs);
+$maxValueLimit = pow(2, 31);
+$minValueLimit = 0;
+$vs = stream_get_line(STDIN, (strlen($maxValueLimit)+1)*$n+1, "\n");
+$valeur_bourse = explode(' ', $vs);
+
+// foreach($valeur_bourse as $v){
+//     echo($v."\n");
+// }
 
 $perte = 0;
-$valeur_bourse[] = "";
-
-for ($i = 0; $i < $n; $i++)
-{
-    $v = intval($inputs[$i]);
-    $valeur_bourse[$i] = $v;
-    //echo($v."\n");
-}
+$perte_max = 0;
+$min = 0;
+$max = 0;
+$maybe_max = 0;
 
 // Write an action using echo(). DON'T FORGET THE TRAILING \n
 // To debug (equivalent to var_dump): error_log(var_export($var, true));
+$taille = count($valeur_bourse) - 1;
 
+for ($i = 0; $i < $taille; $i++){
+    $act = $valeur_bourse[$i];
+    $next = $valeur_bourse[$i + 1];
 
+    if($act > $next){
+        $max = ($max == 0) ? $act : $max;
+        $min = ($min == 0) ? $next : min($min, $next);
+        
+        $perte = $min - $max;
 
-$retour = pertes($valeur_bourse, count($valeur_bourse));
-$perte = $retour;
+        if($maybe_max != 0){
+            $max = $maybe_max;
+            $maybe_max = 0;
+            $min = 0;
+            
+        }
 
-if($perte < 0){
-    echo($perte."\n");
+        $perte_max = min($perte_max, $perte);
+        
+        continue;
+    }
+    
+    if($next > $max){
+        $maybe_max = $next;
+    }
 }
-else{
-    echo("0\n");
-}
+
+echo($perte_max);
 ?>
